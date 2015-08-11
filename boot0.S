@@ -1,11 +1,11 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; 		JG		      ;
-;				      ;
-; MBR - boot0			      ;
-;				      ;
-; the role of boot0 is to read boot1  ;
-; from the floppy drive and jmp to it ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;		   JG			;
+;					;
+; MBR - boot0				;
+;					;
+; the purpose of boot0 is to read boot1 ;
+; from the floppy drive and jmp to it	;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [BITS 16]			; 16 bits ASM in real-mode
 [ORG  0x7C00]			; BIOS jumps at 0x7C00, so the MBR has
@@ -17,7 +17,7 @@
 
 msg	db 'Loading ...'
 
-display_msg:
+display_msg:		   	; Displays a loading message in the center of the screen
 	mov ah, 0x13		; Number of the 'write-a-string' function
 	mov al, 1		; Write mode (advance cursor, ASCII string)
 	mov bh, 0		; Page number to write to,
@@ -55,7 +55,8 @@ boot:
 	mov gs, ax		; the code
 
 	mov ax, 0x0		; Creates stack of size 65535 - biggest addressable space
-	mov ss, ax		; in real-mode (16 bits ASM) - ss <=> base pointer
+				; in real-mode (16 bits ASM)
+	mov ss, ax		; ss = base pointer
 	mov sp, 0xFFFF		; Register sp points to the top of the stack
 
 	sti			; Enables back CPU hardware interrupts
@@ -70,7 +71,7 @@ boot:
 
 	call read_floppy
 
-	jmp 0x1000		; Finally jumps to boot1 !
+	jmp 0x1000		; Finally jumps to boot1
 
 	hlt			; Halts the system
 
