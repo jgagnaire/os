@@ -13,7 +13,7 @@
 
 	cli			; Disables CPU hardware interrupts
 				; to avoid data to be pushed on the stack
-	jmp boot
+	jmp boot0
 
 msg	db 'Loading ...'
 
@@ -46,7 +46,7 @@ read_floppy:			; See wikipedia 'int 13h AH=02h' for possible parameters
 	int 0x13
 	jc read_floppy
 
-boot:
+boot0:
 	call display_msg
 
 	mov ax, $$		; Adjusts segment registers in 0x7C00 -
@@ -76,7 +76,7 @@ boot:
 	hlt			; Halts the system
 
 	times 510-($-$$) db 0 	; Fills the rest with 0s.
-				; '$' <=> 'start of this instr', '$$' <=> 'start of this prgm'
+				; '$' = 'start of this instruction', '$$' = 'start of this prgm'
 				; 510 because the bootsector has to be 512 bytes long
 
 	dw 0xAA55		; Bootloader signature (510 + 2 = 512 bytes), so that the BIOS
