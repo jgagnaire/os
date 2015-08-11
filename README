@@ -1,0 +1,6 @@
+
+-> to compile boot0.S:
+   'nasm -f bin boot0.S'
+
+-> to run it with Qemu:
+   'qemu-system-x86 boot0'
