@@ -18,8 +18,6 @@ display_msg:
 	mov cx, 10		; string length
 	mov dh, 12		; starting row
 	mov dl, 30		; starting column
-	push cs
-	pop es
 	mov bp, msg
 
 	int 0x10		; call the BIOS video interrupt
