@@ -17,14 +17,14 @@
 
 msg	db 'Loading ...', 0
 
-my_putstr:		   	; Displays a message in ds:si to the screen
-	lodsb
-	cmp al, 0
-	je done
-	mov ah, 0x0E
-	mov bx, 0x07
+my_putstr:		   	; Displays a null-terminated string in ds:si to the screen
+	lodsb			; Loads ds:si in al
+	cmp al, 0		; Check if al contains the terminating null byte
+	je done			; Returns if so
+	mov ah, 0x0E		; Function nb to display a character to the screen
+	mov bx, 0x07		; Text attributes - ascii, white on black background
 	int 0x10		; Calls the BIOS video interrupt
-	jmp my_putstr
+	jmp my_putstr		; Again for the next character
 
 done:
 	ret
