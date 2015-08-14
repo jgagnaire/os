@@ -6,7 +6,7 @@ Four 16-bit segment registers:
    -> SS, current Stack Segment
    -> ES, Extra Segment (determined by the programmer)
 
-Each segment has a maximal size of 65 536 bytes (max value of an unsigned 16-bit integer - 1)
+Each segment has a max size of 65 536 bytes (an unsigned 16-bit integer can take 65 536 != values)
 
 The value stored in a segment register is interpreted as the first 16 bits of a 20-bit address
 called a segment address, of which the least significant four bits are all zeros.
