@@ -1,6 +1,9 @@
 
--> to compile boot0.S:
-   'nasm -f bin boot0.S'
+-> to compile:
+   'nasm -f bin boot0.S ; nasm -f bin boot1.S'
+
+-> to create a floppy named aaa:
+   'cat boot0 boot1 /dev/zero |dd of=aaa bs=512 count=2880'
 
 -> to run it with Qemu:
-   'qemu-system-x86 boot0'
+   'qemu-system-x86 -boot a -fda aaa'

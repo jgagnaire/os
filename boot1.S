@@ -9,16 +9,24 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [BITS 16]
-[ORG 0x1000]
+[ORG 0x0]
 
 	jmp boot1
 
+%include "my_putstr.inc"
+
 boot1:
-	mov ax, $$		; Initializes segment registers - see boot0.S for details
+	mov ax, 0x100		; Initializes segment registers
 	mov ds, ax
 	mov es, ax
-	mov gs, ax
 
-	mov ax, 0x0		; Sets a stack in 0x1000 of size 65535 - see boot0.S
+	mov ax, 0x8000		; Sets a stack
 	mov ss, ax
-	mov sp, 0xFFFF
+	mov sp, 0xF000
+
+	mov si, test_msg
+	call my_putstr
+
+	jmp $
+
+test_msg db "test", 0

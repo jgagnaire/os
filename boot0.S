@@ -1,83 +1,60 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;		   JG			;
-;					;
-; MBR - boot0				;
-;					;
-; the purpose of boot0 is to read boot1 ;
-; from the floppy drive and jmp to it	;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 		   JG		  ;
+;				  ;
+;  MBR - boot0			  ;
+;				  ;
+; the purpose of boot0 is to jump ;
+; to boot1			  ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-[BITS 16]			; 16 bits ASM in real-mode
-[ORG  0x7C00]			; BIOS jumps at 0x7C00, so the MBR has
-				; to be located at this adress
+[BITS 16]
+[ORG 0x0]
 
-	cli			; Disables CPU hardware interrupts
-				; to avoid data to be pushed on the stack
 	jmp boot0
 
-msg	db 'Loading ...', 0
-
-my_putstr:		   	; Displays a null-terminated string in ds:si to the screen
-	lodsb			; Loads ds:si in al
-	cmp al, 0		; Check if al contains the terminating null byte
-	je done			; Returns if so
-	mov ah, 0x0E		; Function nb to display a character to the screen
-	mov bx, 0x07		; Text attributes - ascii, white on black background
-	int 0x10		; Calls the BIOS video interrupt
-	jmp my_putstr		; Again for the next character
-
-done:
-	ret
-
-reset_floppy:			; Reset floppy drive controller at the begin of sector 0
-	xor ah, ah		; Reset function of BIOS int 0x13 number
-	xor dl, dl		; 1st floppy drive
-	int 0x13		; BIOS interrupt for drives read/write operations
-	jc reset_floppy		; jc = jump-if-carry (is set) = if BIOS int 0x13 failed
-
-read_floppy:			; See wikipedia 'int 13h AH=02h' for possible parameters
-	mov ah, 0x02		; Read function of BIOS int 0x13 nb
-	mov al, 1		; Reads 1 sector (512 bytes)
-	mov ch, 1		; Cylinder 1
-	mov cl, 2		; Reads the second sector (sector nb starts at 1 and not 0)
-	xor dh, dh		; Head 0
-	xor dl, dl		; Drive 0 = floppy drive
-	int 0x13
-	jc read_floppy
+%include "my_putstr.inc"
 
 boot0:
-	mov si, msg
+	mov [bootdev], dl	; Gets the boot device nb setted by the BIOS in dl
+
+	mov ax, 0x07C0		; Initializes the segment registers in 0x7C00
+	mov ds, ax		; since the BIOS will call the MBR from here
+	mov es, ax
+
+	mov ax, 0x8000		; Sets a stack from 0x8F000 to 0x80000 in RAM
+	mov ss, ax
+	mov sp, 0xF000
+
+	mov si, msg		; Argument string to display
 	call my_putstr
 
-	xor ax, ax		; Adjusts segment registers in 0x7C00 -
-	mov ds, ax		; theoretically overlaps the stack, but not in practice	
-	mov es, ax		; because boot0 won't use enough stack space to overwrite
-	mov gs, ax		; the code
+	xor ax, ax		; Inits the device on which boot1 is
+	int 0x13		; BIOS software interrupt for device rd/wr operations
 
-	xor ax, ax		; Creates stack of size 65535 - biggest addressable space
-				; in real-mode (16 bits ASM)
-	mov ss, ax		; ss = base pointer
-	mov sp, 0xFFFF		; Register sp points to the top of the stack
+	push es			; Saves es on the stack
+	mov ax, 0x100		; We want to copy boot1 at physical location 0x1000
+	mov es, ax		; Sets a segment at 0x1000 in RAM
+	xor bx, bx		; Clears bx register - faster than 'mov bx, 0'
 
-	sti			; Enables back CPU hardware interrupts
+	mov ah, 2		; Int 13h read function number
+	mov al, 1		; 1 sector is to be read
+	mov ch, 0		; On cylinder 0
+	mov cl, 2		; We want to read sector 2
+	mov dh, 0		; At head 0
+	mov dl, [bootdev]	; Get the previously saved boot device nb from the BIOS
+	int 0x13		; Calls the interrupt
+	pop es			; Restores es from the stack
 
-	call reset_floppy	; See the physical architecture of a floppy to enlight
-				; what cylinders, heads, tracks and sectors are, and
-				; why actions performed on them can fail
+	jmp dword 0x100:0	; Finally jumps to boot1
 
-	mov ax, 0x1000		; To read the boot1 sector at arbitrary adress 0x1000
-	mov es, ax		; A 64kb segment starts at the adress contained in es
-	xor bx, bx	 	; Clears bx register - faster than mov bx, 0
+	hlt
 
-	call read_floppy
-	
-	jmp 0x1000		; Finally jumps to boot1
+msg	db "Loading ...", 0
+bootdev	db 0
 
-	hlt			; Halts the system
-
-	times 510-($-$$) db 0 	; Fills the rest with 0s.
+	times 510-($-$$) db 0	; Fills the rest with 0s.
 				; '$' = 'start of this instruction', '$$' = 'start of this prgm'
 				; 510 because the bootsector has to be 512 bytes long
 
-	dw 0xAA55		; Bootloader signature (510 + 2 = 512 bytes), so that the BIOS
+	dw 0xAA55		; Bootloader signature (510 + 2 bytes), so that the BIOS
 				; recognizes boot0 as an MBR
