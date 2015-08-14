@@ -28,9 +28,6 @@ boot0:
 	mov si, msg		; Argument string to display
 	call my_putstr
 
-	xor ax, ax		; Inits the device on which boot1 is
-	int 0x13		; BIOS software interrupt for device rd/wr operations
-
 	push es			; Saves es on the stack
 	mov ax, 0x100		; We want to copy boot1 at physical location 0x1000
 	mov es, ax		; Sets a segment at 0x1000 in RAM
@@ -48,6 +45,7 @@ boot0:
 	jmp dword 0x100:0	; Finally jumps to boot1
 
 	hlt
+
 
 msg	db "Loading ...", 0
 bootdev	db 0
