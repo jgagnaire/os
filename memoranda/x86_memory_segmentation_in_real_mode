@@ -1,0 +1,31 @@
+
+Four 16-bit segment registers:
+
+   -> CS, current Code Segment
+   -> DS, current Data Segment
+   -> SS, current Stack Segment
+   -> ES, Extra Segment (determined by the programmer)
+
+Each segment has a maximal size of 65 536 bytes (max value of an unsigned 16-bit integer - 1)
+
+The value stored in a segment register is interpreted as the first 16 bits of a 20-bit address
+called a segment address, of which the least significant four bits are all zeros.
+
+To get the linear address - same as the physical address in real mode - a 16-bit offset is added
+to the segment address.
+
+Example: segmented address 0x06EF:1234
+-> segment selector of 0x06EF (value stored in the segment registers)
+-> which gives us a 20-bit segment address of 0x06EF0 (the last 4-bit are zeros)
+-> to which we add the offset 0x1234
+-> so the linear address resulting is 0x06EF0 + 0x1234 = 0x08124
+
+A linear address can thus be reached from different segment:offset pairs
+Example: our linear address 0x08124 can have the segmented addresses:
+-> 0x06EF:1234
+-> 0x0812:0004
+-> 0x0000:8124
+etc...
+
+A 20-bit linear address allows us to address 2^20 bytes = 1 MB max
+
