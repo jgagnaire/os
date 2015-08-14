@@ -15,8 +15,8 @@ To get the linear address - same as the physical address in real mode - a 16-bit
 to the segment address.
 
 Example: segmented address 0x06EF:1234
--> segment selector of 0x06EF (value stored in the segment registers)
--> which gives us a 20-bit segment address of 0x06EF0 (the last 4-bit are zeros)
+-> segment selector of 0x06EF
+-> which gives us a 20-bit segment address of 0x06EF0 (the least significant 4 bits are zeros)
 -> to which we add the offset 0x1234
 -> so the linear address resulting is 0x06EF0 + 0x1234 = 0x08124
 
