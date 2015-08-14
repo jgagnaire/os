@@ -3,14 +3,13 @@
 ;					  ;
 ; bootloader stage 2 - boot1		  ;
 ;					  ;
-; the purpose of boot1 is to enable the	  ;
-; A20 gate, load the GDT and begin kernel ;
-; execution				  ;
+; the purpose of boot1 is to load the	  ;
+; kernel from the boot floppy disk, init  ;
+; the system and begin kernel execution	  ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [BITS 16]
 [ORG 0x1000]
-
 
 	jmp boot1
 
