@@ -1,9 +1,9 @@
 
 -> to assemble:
-   'nasm -f bin boot0.S ; nasm -f bin boot1.S'
+   'nasm -f bin boot0.S ; nasm -f bin boot1.S ; nasm -f bin kernel.S'
 
 -> to create a floppy named aaa:
-   'cat boot0 boot1 /dev/zero |dd of=aaa bs=512 count=2880'
+   'cat boot0 boot1 kernel /dev/zero |dd of=aaa bs=512 count=2880'
 
 -> to run it with Qemu:
    'qemu-system-x86 -boot a -fda aaa'

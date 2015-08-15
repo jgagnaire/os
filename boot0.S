@@ -47,10 +47,8 @@ boot0:
 
 	jmp dword 0x100:0	; Finally jumps to boot1
 
-	hlt
 
-
-msg	db "Loading ...", 0
+msg	db "Executing boot0...",13,10,0
 bootdev	db 0
 
 	times 510-($-$$) db 0	; Fills the rest with 0s.
