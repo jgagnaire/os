@@ -10,6 +10,8 @@
 [BITS 16]
 [ORG 0x0]
 
+	cli			; Disables CPU hardware interrupts so that the stack
+				; stays untouched
 	jmp boot0
 
 %include "my_putstr.inc"
@@ -30,7 +32,9 @@ boot0:
 
 	xor ax, ax		; Clears ah and al
 	int 0x13		; Resets disk in the dl register - see 'int13h ah=0'
-	
+
+	sti			; Enables CPU hardware interrupts back
+
 	push es			; Saves es on the stack
 	mov ax, 0x100		; We want to copy boot1 at physical location 0x1000
 	mov es, ax		; Sets a segment at 0x1000 in RAM
