@@ -1,0 +1,18 @@
+
+16-bit registers: AX, BX, CX, DX, BP, SP, SI, DI, CS, DS, SS, ES and IP.
+
+-> AX, BX, CX, DX, general purpose registers, can be adressed as 8-bit registers
+   AX = AH (high 8-bit) + AL (low 8-bit)
+
+-> BP (Base Pointer) - beginning of the stack
+
+-> SP (Stack Pointer) contains a pointer to the current stack entry
+
+-> SI (Source Index) and DI (Destination Index) are used as dest/src index for string operations.
+   See lodsb and movsb instructions
+
+-> CS, DS, SS, ES are segment addresses registers (see memo on x86 memory segmentation in real mode)
+
+-> IP (Instruction Pointer) stores the offset of the next instruction to be executed.
+   Associated with the Code Segment address register (as CS:IP), it gives the segmented address
+   of the next instruction
