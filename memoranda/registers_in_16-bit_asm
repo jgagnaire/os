@@ -6,7 +6,7 @@
 
 -> BP (Base Pointer) - beginning of the stack
 
--> SP (Stack Pointer) contains a pointer to the current stack entry
+-> SP (Stack Pointer) contains a pointer to the current stack entry (top of the stack)
 
 -> SI (Source Index) and DI (Destination Index) are used as dest/src index for string operations.
    See lodsb and movsb instructions

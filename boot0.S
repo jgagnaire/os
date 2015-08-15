@@ -1,7 +1,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; 		   JG		  ;
 ;				  ;
-;  MBR - boot0			  ;
+;  boot0 - boot sector		  ;
 ;				  ;
 ; the purpose of boot0 is to jump ;
 ; to boot1			  ;
@@ -18,7 +18,7 @@ boot0:
 	mov [bootdev], dl	; Gets the boot device nb setted by the BIOS in dl
 
 	mov ax, 0x07C0		; Initializes the segment registers in 0x7C00
-	mov ds, ax		; since the BIOS will call the MBR from here
+	mov ds, ax		; since the BIOS will call the boot sector from here
 	mov es, ax
 
 	mov ax, 0x8000		; Sets a stack from 0x8F000 to 0x80000 in RAM
@@ -58,4 +58,4 @@ bootdev	db 0
 				; 510 because the bootsector has to be 512 bytes long
 
 	dw 0xAA55		; Bootloader signature (510 + 2 bytes), so that the BIOS
-				; recognizes boot0 as an MBR
+				; recognizes boot0 as a boot sector
