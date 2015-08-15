@@ -1,12 +1,12 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;		    JG			  ;
-;					  ;
-; bootloader stage 2 - boot1		  ;
-;					  ;
-; the purpose of boot1 is to load the	  ;
-; kernel from the boot floppy disk, init  ;
-; the system and begin kernel execution	  ;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;		    JG			   ;
+;					   ;
+; bootloader stage 2 - boot1		   ;
+;					   ;
+; the purpose of boot1 is to init the GDT, ;
+; switch to protected mode, and jump to    ;
+; the kernel				   ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [BITS 16]
 [ORG 0x0]

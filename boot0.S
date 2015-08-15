@@ -28,6 +28,9 @@ boot0:
 	mov si, msg		; Argument string to display
 	call my_putstr
 
+	xor ax, ax		; Clears ah and al
+	int 0x13		; Resets disk in the dl register - see 'int13h ah=0'
+	
 	push es			; Saves es on the stack
 	mov ax, 0x100		; We want to copy boot1 at physical location 0x1000
 	mov es, ax		; Sets a segment at 0x1000 in RAM
@@ -35,9 +38,9 @@ boot0:
 
 	mov ah, 2		; Int 13h read function number
 	mov al, 1		; 1 sector is to be read
-	mov ch, 0		; On cylinder 0
+	xor ch, ch		; On cylinder 0
 	mov cl, 2		; We want to read sector 2
-	mov dh, 0		; At head 0
+	xor dh, dh		; At head 0
 	mov dl, [bootdev]	; Get the previously saved boot device nb from the BIOS
 	int 0x13		; Calls the interrupt
 	pop es			; Restores es from the stack
