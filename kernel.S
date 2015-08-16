@@ -1,23 +1,15 @@
+;
+; JG - kernel.S
+;
 
-[BITS 16]
-[ORG 0x0]
+[BITS 32]
+[ORG 0x1000]
 
-	jmp start
-
-%include "my_putstr.inc"
-
-start:
-	mov ax, 0x120
-	mov ds, ax
-	mov es, ax
-
-	mov ax, 0x8000
-	mov ss, ax
-	mov sp, 0xF000
-
-	mov si, test_k
-	call my_putstr
+	mov byte [0xB8A00], 'L'
+	mov byte [0xB8A01], 000101b
+	mov byte [0xB8A02], 'E'
+	mov byte [0xB8A03], 000101b
+	mov byte [0xB8A04], 'L'
+	mov byte [0xB8A05], 000101b
 
 	jmp $
-
-test_k db "msg from the kernel",13,10,0
