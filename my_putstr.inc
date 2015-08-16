@@ -1,3 +1,7 @@
+;
+; JG - my_putstr.inc
+;
+
 %ifndef MY_PUTSTR_INC
 %define MY_PUTSTR_INC
 
