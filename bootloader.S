@@ -26,7 +26,7 @@ boot:
 	call my_putstr
 
 	xor ax, ax		; Clears ah and al - faster than 'mov ax, 0'
-	int 0x13		; Resets disk in the dl register - see 'int13h ah=0'
+	int 0x13		; Resets disk in the dl register - see 'int 13h ah=0'
 
 	sti			; Enables CPU hardware interrupts back
 
