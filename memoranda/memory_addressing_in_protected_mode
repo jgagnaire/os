@@ -1,0 +1,68 @@
+
+The protected mode allows us to work in 32-bit mode, thus addressing 4GB of memory at most.
+
+The CPU is switched to protected mode by setting the first bit of the register cr0 to 1. It is
+called the PE (Protection Enable) bit.
+
+
+-> The logical address is directly used by the programmer
+   Logical address = segment selector + offset
+
+   A segment selector in protected mode is a 16-bit register that contains an index in the
+   Global Descriptor Table (GDT).
+   	  - CS is the code segment selector
+	  - DS is the data segment selector
+	  - ES, FS, GS are general segment selectors
+	  - ss is the stack segment selector
+
+   The GDT is an array of 64-bit records, each records describing one segment.
+   Its location in memory is given to the processor in the GDTR (GDT Register) through the
+   'lgdt' instruction.
+
+   A segment is described by:  - the starting location of the segment (on 32 bits) called 'base'
+     	     		       - the size of the segment in bytes called 'limit'
+			       - its type (code, data, stack...)
+
+   Details of a segment descriptor:
+   	   - the 32-bit linear address where the segment starts, called 'segment base'.
+	   - the size of the segment on 20 bits, called 'segment limit'.
+	   - the G bit: if 0 the limit is given in bytes, otherwise in 4ko-page number.
+	   - the D/B bit: 0 for a 16-bit segment, otherwise 32-bit.
+	   - the L bit: 1 if the segment described is a 64-bit code segment in 32-bit mode,
+	     0 otherwise
+	   - the AVL (Available) bit is free to use.
+	   - the P bit: 0 if the segment is not in physical memory, 1 otherwise. If some code
+	     tries to access an object through a segment descriptor with a P (Present) bit set
+	     to 0, a fault will be triggered.
+	   - the DPL (Descriptor Privilege Level) on 2 bits.
+	   - the S bit: 0 for a 'system segment' descriptor, 1 for a data/code segment descriptor
+	   - the type of the segment, on 4 bits:
+	     	 * if the segment described is a code segment:
+		      + the first of the four type bits is 1
+		      + the C (Conforming) bit: 0 if the code segment is non-conforming,
+		      	1 otherwise.
+		      	(see http://www.logix.cz/michal/doc/i386/chp06-03.htm)
+		      + the R (Readable) bit: 0 if the code segment is only accessible
+		      	for execution, 1 if it is also for reading.
+		      + the A (Accessed) bit: set to 1 by the CPU when the code segment is in use.
+		 * if the segment described is a data segment:
+		      + the first bit is 0
+		      + the E (Expand-down) bit: 0 if normal, 1 if expand-down (as a stack, it will
+		      	grow downward). If 1, the segment 'limit' is then interpreted as the
+			inferior limit of the segment, having 0xFFFFFFFF as a superior limit
+		      + the W (Writable) bit: 0 if the segment is accessible for read-only
+		      	operations, 1 for read-write operations.
+		      + the A bit: same as a code segment.
+
+
+
+   The GDT must at least contains:  - the null descriptor, 8 null bytes at its beginning
+      	       	  		    - a code segment descriptor
+				    - a data segment descriptor
+
+
+
+-> The segmentation unit then turns the logical address in a linear address on 32 bits
+
+-> If paging is activated, the paging unit turns the linear address in a physical address
+

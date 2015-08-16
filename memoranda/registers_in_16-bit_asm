@@ -11,7 +11,7 @@
 -> SI (Source Index) and DI (Destination Index) are used as dest/src index for string operations.
    See lodsb and movsb instructions
 
--> CS, DS, SS, ES are segment addresses registers (see memo on x86 memory segmentation in real mode)
+-> CS, DS, SS, ES are segment addresses registers (see memo on memory addressing in real mode)
 
 -> IP (Instruction Pointer) stores the offset of the next instruction to be executed.
    Associated with the Code Segment address register (as CS:IP), it gives the segmented address

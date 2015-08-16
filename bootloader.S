@@ -82,7 +82,7 @@ next_line:
 	mov esp, 0x9F000	; Sets the stack pointer
 
 	jmp dword 0x8:0x1000	; Finally jumps to the kernel - 0x8 is the offset in the GDT
-				; corresponding to the descriptor of the code segment
+				; corresponding to the code segment
 
 
 msg	db "Executing bootloader...",13,10,0

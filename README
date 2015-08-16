@@ -4,6 +4,6 @@ to run with Qemu:
 
 
 to-do:
--> write a memo about the GDT
-->   //     //    //  protected-mode
+-> write a memo about the framebuffer
+-> //       //        //  32-bit ASM registers
 
