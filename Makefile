@@ -1,3 +1,7 @@
+#
+# JG - Makefile
+#
+
 NAME		= floppy
 
 BOOTLD_SRC	= bootloader.S
