@@ -98,8 +98,8 @@ gdtend:				; This is for the calculation of the GDT size
 
 
 gdtptr:
-	dw	0		; 2 bytes representing the limit of the GDT
-	dd	0		; 4 bytes representing the address base of the GDT
+	dw 0			; 2 bytes representing the limit of the GDT
+	dd 0			; 4 bytes representing the address base of the GDT
 				; 6 bytes is the size of the GDTR
 
 	times 510-($-$$) db 0	; Fills the rest with 0s.

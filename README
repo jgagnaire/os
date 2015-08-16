@@ -2,3 +2,8 @@
 to run with Qemu:
 'qemu-system-x86 -boot a -fda floppy'
 
+
+to-do:
+-> write a memo about the GDT
+->   //     //    //  protected-mode
+
