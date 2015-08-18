@@ -53,7 +53,7 @@ boot:
 	xor ebx, ebx		; address of the GDT (which starts at address 'gdt')
 	mov ax, ds		; Starts from the data segment address 0x7C0 stored in ds
 	mov ecx, eax		; ecx is now equals to 0x7C0
-	shl ecx, 4		; 4-bit left shift = ecx * 16 - see memo on memory segmentation
+	shl ecx, 4		; 4-bit left shift = ecx * 16 - see note on memory segmentation
 	mov bx, gdt
 	add ecx, ebx		; Adds the offset to the segment address to get the linear address
 	mov dword [gdtptr + 2], ecx ; Stores the GDT linear address in the second part of the
