@@ -25,8 +25,6 @@ void	_start(void)
 
 void	init_system(void)
 {
-  g_cursor.x = 0;
-  g_cursor.y = 0;
-  g_cursor.attr = 0b000111;
   clear_screen();
+  g_cursor.attr = 0b000111;
 }
