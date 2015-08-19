@@ -6,19 +6,24 @@ CC		= gcc
 
 LD		= ld
 
-CFLAGS		= -W -Wall -Wextra -Werror -masm=intel
+CFLAGS		= -masm=intel -nostdlib -W -Wall -Wextra -Werror -I$(INC_FLD)
 
 LDFLAGS		= --oformat binary -Ttext 1000
 
 NAME		= floppy
 
-BOOTLD_SRC	= bootloader.S
+INC_FLD		= ./includes/
+
+SRCS_FLD	= ./srcs/
+
+BOOTLD_SRC	= $(SRCS_FLD)bootloader.S
 
 BOOTLD_NAME	= bootloader
 
 KERNEL_NAME	= kernel
 
-KERNEL_SRCS	= kernel.c
+KERNEL_SRCS	= $(SRCS_FLD)kernel.c	\
+		$(SRCS_FLD)putstr.c
 
 KERNEL_OBJS	= $(KERNEL_SRCS:.c=.o)
 
@@ -31,7 +36,7 @@ FORMAT_FLAG	= -f bin
 all:		$(NAME)
 
 $(BOOTLD_NAME):
-		$(NASM) $(FORMAT_FLAG) bootloader.S
+		$(NASM) $(FORMAT_FLAG) $(BOOTLD_SRC) -o $(BOOTLD_NAME)
 
 $(KERNEL_NAME):	$(KERNEL_OBJS)
 		$(LD) $(LDFLAGS) $(KERNEL_OBJS) -o $(KERNEL_NAME)

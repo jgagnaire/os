@@ -10,21 +10,21 @@
 	jmp boot
 
 my_putstr:
-	        push ax		; Saves ax and bx
-	        push bx
+        push ax			; Saves ax and bx
+        push bx
 begin:
-	        lodsb		; Loads ds:si in al
-	        cmp al, 0	; Check if al contains the terminating null byte
-	        je end		; Returns if so
-	        mov ah, 0x0E	; Function nb to display a character to the screen
-	        mov bx, 0x07	; Text attributes - ASCII, white on black background
-	        int 0x10	; Calls the BIOS video interrupt
-	        jmp begin	; Again for the next character
+        lodsb			; Loads ds:si in al
+        cmp al, 0		; Check if al contains the terminating null byte
+        je end			; Returns if so
+        mov ah, 0x0E		; Function nb to display a character to the screen
+        mov bx, 0x07		; Text attributes - ASCII, white on black background
+        int 0x10		; Calls the BIOS video interrupt
+        jmp begin		; Again for the next character
 
 end:
-	        pop bx		; Restores bx and ax
-	        pop ax
-	        ret
+        pop bx			; Restores bx and ax
+        pop ax
+        ret
 
 boot:
 	mov [bootdev], dl	; Gets the boot device nb setted by the BIOS in dl
@@ -98,6 +98,8 @@ next_line:
 
 	jmp dword 0x8:0x1000	; Finally jumps to the kernel - 0x8 is the offset in the GDT
 				; corresponding to the code segment
+	hlt
+	jmp $
 
 
 msg	db "Executing bootloader...",13,10,0
