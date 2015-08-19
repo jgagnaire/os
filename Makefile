@@ -23,7 +23,7 @@ BOOTLD_NAME	= bootloader
 KERNEL_NAME	= kernel
 
 KERNEL_SRCS	= $(SRCS_FLD)kernel.c	\
-		$(SRCS_FLD)putstr.c
+		$(SRCS_FLD)utils.c
 
 KERNEL_OBJS	= $(KERNEL_SRCS:.c=.o)
 

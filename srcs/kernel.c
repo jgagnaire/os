@@ -4,7 +4,7 @@
 
 #include "utils.h"
 
-void	init_system(void);
+void init_system(void);
 
 void	_start(void)
 {
