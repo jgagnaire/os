@@ -27,10 +27,34 @@ void		clear_screen(void)
   /*
   ** And we reset the cursor position
   */
-  g_cursor.y = g_cursor.x = 0;
+  g_cursor.x = 0;
+  g_cursor.y = 0;
 }
 
-void	putstr(const char *s)
+void		putchar(char c)
 {
-  (void)s;
+  unsigned	i;
+  char		*fbptr;
+
+  for (i = 0;g_esc_char_tab[i].fptr;++i)
+    if (c == g_esc_char_tab[i].c)
+      return (g_esc_char_tab[i].fptr());
+  fbptr = (char *)0xB8000;
+  i = 2 * g_cursor.x + 160 * g_cursor.y;
+  fbptr[i] = c;
+  fbptr[i + 1] = g_cursor.attr;
+  if (!(g_cursor.x = (g_cursor.x + 1) % 80))
+    g_cursor.y = (g_cursor.y + 1) % 25;
+}
+
+void	putstr(char *s)
+{
+  for (;*s;++s)
+    putchar(*s);
+}
+
+void	init_system(void)
+{
+  clear_screen();
+  g_cursor.attr = 0B000111;
 }

@@ -6,9 +6,10 @@ CC		= gcc
 
 LD		= ld
 
-CFLAGS		= -masm=intel -nostdlib -W -Wall -Wextra -Werror -I$(INC_FLD)
+CFLAGS		= -masm=intel -nostdlib -fno-builtin -m32	\
+		-W -Wall -Wextra -Werror -I$(INC_FLD)
 
-LDFLAGS		= --oformat binary -Ttext 1000
+LDFLAGS		= -melf_i386 --oformat binary -Ttext 1000
 
 NAME		= floppy
 
@@ -22,8 +23,9 @@ BOOTLD_NAME	= bootloader
 
 KERNEL_NAME	= kernel
 
-KERNEL_SRCS	= $(SRCS_FLD)kernel.c	\
-		$(SRCS_FLD)utils.c
+KERNEL_SRCS	= $(SRCS_FLD)kernel_main.c	\
+		$(SRCS_FLD)utils.c		\
+		$(SRCS_FLD)esc_char_fcts.c
 
 KERNEL_OBJS	= $(KERNEL_SRCS:.c=.o)
 
