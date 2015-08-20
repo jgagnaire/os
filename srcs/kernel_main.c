@@ -7,6 +7,6 @@
 void	_start(void)
 {
   init_system();
-  putstr("Lel\blabite\n");
+  putstr("lel\n");
   while (1);
 }
