@@ -5,6 +5,7 @@
 #ifndef		UTILS_H_
 # define	UTILS_H_
 
+void		set_text_attr(char);
 void		clear_screen(void);
 void		init_system(void);
 void		putchar(char);

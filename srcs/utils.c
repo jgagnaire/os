@@ -36,13 +36,25 @@ void		putchar(char c)
   unsigned	i;
   char		*fbptr;
 
+  /*
+  ** If c is an escaped character
+  ** '\b', '\t', '\n', '\v', '\f' or '\r'
+  ** we have to deal with the cursor position
+  */
   for (i = 0;g_esc_char_tab[i].fptr;++i)
     if (c == g_esc_char_tab[i].c)
       return (g_esc_char_tab[i].fptr());
+
+  /*
+  ** Otherwise, we just display it
+  */
   fbptr = (char *)0xB8000;
-  i = 2 * g_cursor.x + 160 * g_cursor.y;
-  fbptr[i] = c;
+  fbptr[i = 2 * g_cursor.x + 160 * g_cursor.y] = c;
   fbptr[i + 1] = g_cursor.attr;
+
+  /*
+  ** And increment the cursor position
+  */
   if (!(g_cursor.x = (g_cursor.x + 1) % 80))
     g_cursor.y = (g_cursor.y + 1) % 25;
 }
@@ -51,6 +63,11 @@ void	putstr(char *s)
 {
   for (;*s;++s)
     putchar(*s);
+}
+
+void	set_text_attr(char new_attr)
+{
+  g_cursor.attr = new_attr;
 }
 
 void	init_system(void)
