@@ -13,12 +13,11 @@ void		putstr(char *);
 /*
 ** esc_char_fcts
 */
+void		esc_char_vertab_formfeed(void);
 void		esc_char_carriageret(void);
 void		esc_char_backspace(void);
 void		esc_char_horiztab(void);
-void		esc_char_formfeed(void);
 void		esc_char_newline(void);
-void		esc_char_vertab(void);
 
 struct
 {
@@ -33,11 +32,11 @@ static const struct
   void	(*fptr)(void);
 } g_esc_char_tab[7] =
   {
-    {7, esc_char_backspace},
+    {8, esc_char_backspace},
     {9, esc_char_horiztab},
     {10, esc_char_newline},
-    {11, esc_char_vertab},
-    {12, esc_char_formfeed},
+    {11, esc_char_vertab_formfeed},
+    {12, esc_char_vertab_formfeed},
     {13, esc_char_carriageret},
     {0, 0}
   };

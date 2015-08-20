@@ -1,6 +1,7 @@
 
-to run with Qemu:
-'qemu-system-x86 -boot a -fda floppy'
+to run :
+-> with Qemu: 'qemu-system-x86 -boot a -fda floppy'
+-> or Bochs (and the bochsrc config file): 'bochs'
 
 
 to-do:

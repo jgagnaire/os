@@ -9,7 +9,7 @@ LD		= ld
 CFLAGS		= -masm=intel -nostdlib -fno-builtin -m32	\
 		-W -Wall -Wextra -Werror -I$(INC_FLD)
 
-LDFLAGS		= -melf_i386 --oformat binary -Ttext 1000
+LDFLAGS		= -m elf_i386 --oformat binary -Ttext 1000
 
 NAME		= floppy
 
