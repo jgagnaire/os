@@ -7,12 +7,11 @@
 
 void		set_text_attr(char);
 void		clear_screen(void);
-void		init_system(void);
 void		putchar(char);
 void		putstr(char *);
 
 /*
-** esc_char_fcts
+** escaped characters fcts
 */
 void		esc_char_vertab_formfeed(void);
 void		esc_char_carriageret(void);

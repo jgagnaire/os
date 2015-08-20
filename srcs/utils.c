@@ -65,13 +65,7 @@ void	putstr(char *s)
     putchar(*s);
 }
 
-void	set_text_attr(char new_attr)
+inline void	set_text_attr(char new_attr)
 {
   g_cursor.attr = new_attr;
-}
-
-void	init_system(void)
-{
-  clear_screen();
-  g_cursor.attr = 0B000111;
 }
