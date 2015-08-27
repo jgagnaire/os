@@ -26,13 +26,13 @@ called the PE (Protection Enable) bit.
    Details of a segment descriptor:
    	   - the 32-bit linear address where the segment starts, called 'segment base'.
 	   - the size of the segment on 20 bits, called 'segment limit'.
-	   - the G bit: if 0 the limit is given in bytes, otherwise in 4ko-page number.
-	   - the D/B bit: 0 for a 16-bit segment, otherwise 32-bit.
-	   - the L bit: 1 if the segment described is a 64-bit code segment in 32-bit mode,
+	   - the G (Granularity) bit: if 0 the limit is given in bytes, otherwise in 4ko-page number.
+	   - the D/B (Default size/Big) bit: 0 for a 16-bit segment, otherwise 32-bit.
+	   - the L (Long) bit: 1 if the segment described is a 64-bit code segment in 32-bit mode,
 	     0 otherwise
 	   - the AVL (Available) bit is free to use.
-	   - the P bit: 0 if the segment is not in physical memory, 1 otherwise. If some code
-	     tries to access an object through a segment descriptor with a P (Present) bit set
+	   - the P (Present) bit: 0 if the segment is not in physical memory, 1 otherwise. If some code
+	     tries to access an object through a segment descriptor with a P bit set
 	     to 0, a fault will be triggered.
 	   - the DPL (Descriptor Privilege Level) on 2 bits.
 	   - the S bit: 0 for a 'system segment' descriptor, 1 for a data/code segment descriptor

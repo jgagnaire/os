@@ -10,5 +10,6 @@ void	_start(void)
 {
   init_system();
   putstr("lel\n");
+  asm volatile("hlt");
   while (1);
 }
