@@ -88,7 +88,7 @@ boot:
 	jmp next_line		; Empties the processor internal caches
 
 next_line:
-	mov ax, 0x10		; Resets all the segment registers to the segment descripted
+	mov ax, 0x10		; Resets all the segment registers to the segment described
 	mov ds, ax		; in the GDT at offset 0x10 = 16 bytes - at which resides the
 	mov fs, ax		; data segment descriptor in the GDT
 	mov gs, ax
