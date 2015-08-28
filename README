@@ -3,7 +3,3 @@ to run :
 -> with Qemu: 'qemu-system-x86 -boot a -fda floppy'
 -> or Bochs (and the bochsrc config file): 'bochs'
 
-
-to-do:
--> Write a note about 32-bit ASM registers
-
