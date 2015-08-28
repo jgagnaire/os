@@ -69,26 +69,3 @@ inline void	set_text_attr(char new_attr)
 {
   g_cursor.attr = new_attr;
 }
-
-void		*memset(void *p, int to_fill_with,
-			unsigned long size)
-{
-  char		*to_fill;
-  unsigned	a;
-
-  for (to_fill = (char *)p, a = 0;a < size;++a)
-    to_fill[a] = to_fill_with;
-  return (p);
-}
-
-void		*memcpy(void *p_dest, const void *p_src,
-			unsigned long size)
-{
-  const char	*to_fill_with = (char *)p_src;
-  char		*to_fill;
-  unsigned	a;
-
-  for (to_fill = (char *)p_dest, a = 0;a < size;++a)
-    to_fill[a] = to_fill_with[a];
-  return (p_dest);
-}

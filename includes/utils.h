@@ -5,8 +5,6 @@
 #ifndef		UTILS_H_
 # define	UTILS_H_
 
-void		*memcpy(void *, const void *, unsigned long);
-void		*memset(void *, int, unsigned long);
 void		set_text_attr(char);
 void		clear_screen(void);
 void		putchar(char);
