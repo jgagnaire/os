@@ -5,20 +5,32 @@
 #include "utils.h"
 #include "gdt.h"
 
+/*
+** Sets a descriptor parameters - see note about the GDT
+*/
 static inline void	set_gdt_segment(unsigned index, int base,
 					int limit, char access,
 					char granularity)
 {
-  g_gdt[index].limit_low_part = limit & 0xFFFF;
-  g_gdt[index].limit_high_part = (limit >> 16) & 0xF;
 
-  g_gdt[index].base_low_part = base & 0xFFFF;
-  g_gdt[index].base_middle_part = (base >> 16) & 0xFF;
-  g_gdt[index].base_high_part = (base >> 24) & 0xFF;
+  /*
+  ** limit_low_part is on 16 bits (short), to which we add
+  ** limit_high_part, a bitfield on 4 bits, in order to
+  ** get the 20 bits composing the 'limit' field size in the GDT
+  */
+  g_gdt[index].limit_low_part = limit & 0B11111111111111111111111111111111;
+  g_gdt[index].limit_high_part = (limit >> 16) & 0B11111111;
+
+  /*
+  ** Same for the base, on 32-bit : short + char + char <=> 16 + 8 + 8
+  */
+  g_gdt[index].base_low_part = base & 0B11111111111111111111111111111111;
+  g_gdt[index].base_middle_part = (base >> 16) & 0B1111111111111111;
+  g_gdt[index].base_high_part = (base >> 24) & 0B1111111111111111;
 
   g_gdt[index].access = access;
 
-  g_gdt[index].granularity = granularity & 0xF;
+  g_gdt[index].granularity = granularity & 0B11111111;
 }
 
 static inline void	load_new_gdt(void)
@@ -48,11 +60,18 @@ static inline void	load_new_gdt(void)
 
 static inline void	reset_gdt(void)
 {
-  putstr("Loading GDT from the kernel...");
+  putstr("Loading new GDT from the kernel...");
 
   set_gdt_segment(NULL_SEGMENT, 0, 0, 0, 0);
-  set_gdt_segment(CODE_SEGMENT, 0, 0xFFFFF, 0x9B, 0x0D);
-  set_gdt_segment(DATA_SEGMENT, 0, 0xFFFFF, 0x93, 0x0D);
+
+  /*
+  ** Code and data segments sizes are set to the maximal addressable
+  ** memory size in 32-bit mode, so their limit is 32 bits set to 1
+  */
+  set_gdt_segment(CODE_SEGMENT, 0, 0B11111111111111111111111111111111,
+		  0B10011011, 0B1101);
+  set_gdt_segment(DATA_SEGMENT, 0, 0B11111111111111111111111111111111,
+		  0B10010011, 0B1101);
 
   /*
   ** Since we have 3 segments of 8 bytes each,
