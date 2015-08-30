@@ -25,8 +25,8 @@ void	_start(void)
                 "mov esp, 0x1FFFF \n");
 
   /*
-  ** We use an extra function call to start with a clean stack frame
-  ** since we modified it earlier
+  ** We use an extra function call to start with a
+  ** clean stack frame since we modified it earlier
   */
   kmain();
 }

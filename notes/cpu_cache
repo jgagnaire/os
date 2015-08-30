@@ -1,5 +1,5 @@
 
-The Cache memory is a small and fast memory used by the CPU to reduce the time of data access in the RAM.
+The cache is a small and fast memory used by the CPU to reduce the time of data access in the RAM.
 It stores copies of frequently used data from the RAM.
 
 
@@ -7,8 +7,8 @@ When trying to read or write to a location in RAM, the CPU first checks if the d
 
 -> if it's the case, then it's a cache hit. Hit rate = percentage of accesses resulting in a cache hit.
 -> if not, a cache miss. During a cache miss, the CPU deletes a cache entry to make room for
-   the "cache-missed" data. The removed cache entry is selected by a 'replacement policy',
-   and is generally the Least Recently Used data (see LRU algorithm).
+   the missed data. The removed cache entry is selected by a 'replacement policy', and is
+   generally the Least Recently Used data (see LRU algorithm).
 
 
 Modern CPUs have at least 3 independent caches:
