@@ -18,26 +18,26 @@ static inline void	set_gdt_segment(unsigned index, int base,
   ** limit_high_part, a bitfield on 4 bits, in order to
   ** get the 20 bits composing the 'limit' field size in the GDT
   */
-  g_gdt[index].limit_low_part = limit & 0B11111111111111111111111111111111;
-  g_gdt[index].limit_high_part = (limit >> 16) & 0B11111111;
+  g_gdt[index].limit_low_part = limit;
+  g_gdt[index].limit_high_part = limit >> 16;
 
   /*
   ** Same for the base, on 32-bit : short + char + char <=> 16 + 8 + 8
   */
-  g_gdt[index].base_low_part = base & 0B11111111111111111111111111111111;
-  g_gdt[index].base_middle_part = (base >> 16) & 0B1111111111111111;
-  g_gdt[index].base_high_part = (base >> 24) & 0B1111111111111111;
+  g_gdt[index].base_low_part = base;
+  g_gdt[index].base_middle_part = base >> 16;
+  g_gdt[index].base_high_part = base >> 24;
 
   g_gdt[index].access = access;
 
-  g_gdt[index].granularity = granularity & 0B11111111;
+  g_gdt[index].granularity = granularity;
 }
 
 static inline void	load_new_gdt(void)
 {
   /*
   ** 'volatile' so that gcc does not perform
-  ** optimization nor erases the assembly code
+  ** optimization on the assembly code
   */
   asm volatile ("lgdt (g_gdtptr) \n"
 
@@ -68,9 +68,9 @@ static inline void	reset_gdt(void)
   ** Code and data segments sizes are set to the maximal addressable
   ** memory size in 32-bit mode, so their limit is 32 bits set to 1
   */
-  set_gdt_segment(CODE_SEGMENT, 0, 0B11111111111111111111111111111111,
+  set_gdt_segment(CODE_SEGMENT, 0, 0xFFFF,
 		  0B10011011, 0B1101);
-  set_gdt_segment(DATA_SEGMENT, 0, 0B11111111111111111111111111111111,
+  set_gdt_segment(DATA_SEGMENT, 0, 0xFFFF,
 		  0B10010011, 0B1101);
 
   /*
