@@ -1,0 +1,27 @@
+
+The Cache memory is a small and fast memory used by the CPU to reduce the time of data access in the RAM.
+It stores copies of frequently used data from the RAM.
+
+
+When trying to read or write to a location in RAM, the CPU first checks if the data is not in the cache:
+
+-> if it's the case, then it's a cache hit. Hit rate = percentage of accesses resulting in a cache hit.
+-> if not, a cache miss. During a cache miss, the CPU deletes a cache entry to make room for
+   the "cache-missed" data. The removed cache entry is selected by a 'replacement policy',
+   and is generally the Least Recently Used data (see LRU algorithm).
+
+
+Modern CPUs have at least 3 independent caches:
+
+-> an instruction cache, to make the instruction address fetch process faster
+-> a TLB (Translation Lookaside Buffer), part of the MMU (Memory Management Unit), to improve
+   the translation process of virtual addresses in physical ones
+-> a data cache, to speed up data read/write operations, itself organized in different cache levels
+   L1, L2, L3. These cache levels are checked in size-increasing order, because larger caches levels
+   have better hit rates but longer access latencies. Then the RAM is checked for the data.
+
+
+Data is transferred between the cache and RAM in blocks of fixed size called cache lines.
+When a cache line is copied in the cache, a cache entry is created in the cache memory.
+A cache entry contains the copied data and the location in RAM (called 'tag').
+

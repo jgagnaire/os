@@ -52,7 +52,7 @@ static inline void	load_new_gdt(void)
 		"mov gs, ax \n"
 		
 		/*
-		** 'ljmp' to empty the processor internal caches
+		** 'ljmp' to empty the processor caches
 		*/
 		"ljmp 0x08:next_line \n"
 		"next_line: \n");
@@ -68,10 +68,8 @@ static inline void	reset_gdt(void)
   ** Code and data segments sizes are set to the maximal addressable
   ** memory size in 32-bit mode, so their limit is 32 bits set to 1
   */
-  set_gdt_segment(CODE_SEGMENT, 0, 0xFFFF,
-		  0B10011011, 0B1101);
-  set_gdt_segment(DATA_SEGMENT, 0, 0xFFFF,
-		  0B10010011, 0B1101);
+  set_gdt_segment(CODE_SEGMENT, 0, 0xFFFF, 0B10011011, 0B1101);
+  set_gdt_segment(DATA_SEGMENT, 0, 0xFFFF, 0B10010011, 0B1101);
 
   /*
   ** Since we have 3 segments of 8 bytes each,
@@ -100,4 +98,5 @@ void	init_system(void)
   ** rely on it
   */
   reset_gdt();
+  // reset stack ptr
 }
