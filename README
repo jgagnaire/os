@@ -4,6 +4,6 @@ to assemble the bootloader, compile the kernel and create the bootable floppy:
 
 
 to run :
--> with Qemu: 'qemu-system-x86 -boot a -fda floppy'
+-> with Qemu: 'qemu-system-x86 -fda floppy'
 -> or Bochs (and the bochsrc config file): 'bochs'
 

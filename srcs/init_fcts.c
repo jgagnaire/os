@@ -6,7 +6,7 @@
 #include "gdt.h"
 
 /*
-** Sets a descriptor parameters - see note about the GDT
+** Sets a descriptor parameters
 */
 static inline void	set_gdt_segment(unsigned index, int base,
 					int limit, char access,
@@ -52,7 +52,7 @@ static inline void	load_new_gdt(void)
 		"mov gs, ax \n"
 		
 		/*
-		** 'ljmp' to empty the processor caches
+		** 'ljmp' to set the new code segment selector in cs
 		*/
 		"ljmp 0x08:next_line \n"
 		"next_line: \n");
@@ -60,8 +60,6 @@ static inline void	load_new_gdt(void)
 
 static inline void	reset_gdt(void)
 {
-  putstr("Loading new GDT from the kernel...");
-
   set_gdt_segment(NULL_SEGMENT, 0, 0, 0, 0);
 
   /*
@@ -72,15 +70,19 @@ static inline void	reset_gdt(void)
   set_gdt_segment(DATA_SEGMENT, 0, 0xFFFF, 0B10010011, 0B1101);
 
   /*
-  ** Since we have 3 segments of 8 bytes each,
-  ** the limit of our GDT will be 3 * 8
+  ** The stack segment is initialized as a data segment that grows
+  ** downward thanks to the E-bit (Expand) - see note about the GDT
   */
-  g_gdtptr.limit = 3 * 8;
+  set_gdt_segment(STCK_SEGMENT, 0, 0x0000, 0B10010111, 0B1101);
+
+  /*
+  ** Since we have 4 segments of 8 bytes each,
+  ** the limit of our GDT will be 4 * 8
+  */
+  g_gdtptr.limit = 4 * 8;
   g_gdtptr.base = (int)&g_gdt;
 
   load_new_gdt();
-
-  putstr(" Done !\n");
 }
 
 void	init_system(void)
@@ -98,5 +100,4 @@ void	init_system(void)
   ** rely on it
   */
   reset_gdt();
-  // reset stack ptr
 }

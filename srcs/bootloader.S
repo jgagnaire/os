@@ -85,7 +85,7 @@ boot:
 	mov cr0, eax		; cr0's first bit is called the PE (Protection Enable) bit
 				; ax is used to access the 16 low bits of eax
 
-	jmp next_line		; Empties the processor caches
+	jmp next_line		; Loads the new code segment selector in cs
 
 next_line:
 	mov ax, 0x10		; Resets all the segment registers to the segment described
