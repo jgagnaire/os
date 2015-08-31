@@ -85,12 +85,76 @@ static inline void	reset_gdt(void)
   load_new_gdt();
 }
 
+static inline void	init_icw(char port, char value)
+{
+  asm volatile ("mov al, %0 \n"
+		"xor dx, dx \n"
+		"mov dl, %1 \n"
+
+		/*
+		** The 'out' instruction writes the value in al
+		** to the I/O port contained in dl
+		*/
+		"out dx, al \n"::"a"(value), "b"(port));
+}
+
+static inline void	init_icw_registers(char port, char icw1,
+					   char icw2, char icw3,
+					   char icw4)
+{
+  init_icw(port, icw1);
+
+  /*
+  ** port + 1 to get I/O port B
+  */
+  init_icw(port + 1, icw2);
+  init_icw(port + 1, icw3);
+  init_icw(port + 1, icw4);
+}
+
+static inline void	init_pic(void)
+{
+  /*
+  ** The I/O master PIC port A is mapped at 0x20,
+  ** slave port A at 0xA0
+  */
+  unsigned char			master_port_a = 0x20;
+  unsigned char			slave_port_a = 0xA0;
+
+  /*
+  ** Master PIC ICW (Initialization Command Words) registers initialization: 
+  **
+  ** -> ICW1: 0b00010001 = with ICW4, several cascading PIC,
+  **    and edge-triggered
+  **
+  ** -> ICW2: An offset in the IDT (used to calculate the base address of the IVT)
+  **    is stored in the 5 most significant bits. The other 3 are used for
+  **    the interrupt number: 8 interrupts, nb 0 to 7 = 000 to 111.
+  **    On x86, the 32 first bytes of the IDT are used to handle exceptions. 
+  **
+  ** -> ICW3: Slave is connected to the third pin, so the third bit is set to 1
+  **
+  ** -> ICW4: mode AEOI - Automatic End Of Interrupt
+  */
+  init_icw_registers(master_port_a, 0B00010001, 32, 0B00000100, 1);
+
+  /*
+  ** Slave ICW registers initialization: 
+  **
+  ** -> ICW1, ICW2 and ICW4 are the same as the master
+  **
+  ** -> ICW3: indicates to the slave to which pin of the master PIC
+  **    it is connected, starting from 0 (so 2 = 3rd pin)
+  */
+  init_icw_registers(slave_port_a, 0B00010001, 32, 2, 1);
+}
+
 void	init_system(void)
 {
   clear_screen();
 
   /*
-  ** Default text attribute: white char on black background
+  ** Default text attribute: black background, white character
   */
   g_cursor.attr = 0B000111;
 
@@ -100,4 +164,9 @@ void	init_system(void)
   ** rely on it
   */
   reset_gdt();
+
+  /*
+  ** Initializes the PIC(s) - Programmable Interrupt Controller
+  */
+  init_pic();
 }
