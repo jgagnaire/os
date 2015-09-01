@@ -26,6 +26,8 @@ KERNEL_NAME	= kernel
 KERNEL_SRCS	= $(SRCS_FLD)kernel_main.c	\
 		$(SRCS_FLD)init_fcts.c		\
 		$(SRCS_FLD)utils.c		\
+		$(SRCS_FLD)gdt.c		\
+		$(SRCS_FLD)idt.c		\
 		$(SRCS_FLD)utils_esc_char_fcts.c
 
 KERNEL_OBJS	= $(KERNEL_SRCS:.c=.o)
