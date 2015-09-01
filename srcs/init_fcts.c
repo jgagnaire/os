@@ -88,12 +88,17 @@ static inline void	reset_gdt(void)
 static inline void	init_icw(char port, char value)
 {
   asm volatile ("mov al, %0 \n"
-		"xor dx, dx \n"
+
+		/*
+		** We will use dx to specify the I/O port address
+		** to 'out' in dl. So we first clear dh
+		*/
+		"xor dh, dh \n"
 		"mov dl, %1 \n"
 
 		/*
 		** The 'out' instruction writes the value in al
-		** to the I/O port contained in dl
+		** to the I/O port contained in dx
 		*/
 		"out dx, al \n"::"a"(value), "b"(port));
 }
