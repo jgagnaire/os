@@ -34,6 +34,7 @@ static inline void	set_gdt_segment(unsigned index, int base,
 
 static inline void	load_new_gdt(void)
 {
+
   /*
   ** 'volatile' so that gcc does not perform
   ** optimization on the assembly code

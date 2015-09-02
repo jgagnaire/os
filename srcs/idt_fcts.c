@@ -64,9 +64,16 @@ static inline void	init_ocw_registers(char port, char ocw1,
   init_ocw(port, ocw2);
 }
 
-static inline void	set_idt(void)
+static inline void	set_idt_segment(unsigned index,
+					int segment_selector,
+					int isr_addr, char type,
+					char s_dpl_p)
 {
-  
+  g_idt[index].offset_low_part = isr_addr;
+  g_idt[index].segment_selector = segment_selector;
+  g_idt[index].zero = 0;
+  g_idt[index].type_s_dpl_p = (s_dpl_p << 4) & type;
+  g_idt[index].offset_high_part = isr_addr >> 16;
 }
 
 void		init_pic(void)
@@ -77,6 +84,7 @@ void		init_pic(void)
   */
   unsigned char	master_port_a = 0x20;
   unsigned char	slave_port_a = 0xA0;
+  unsigned	i;
 
   /*
   ** Master PIC ICW (Initialization Command Words) registers initialization:
@@ -125,7 +133,11 @@ void		init_pic(void)
   init_ocw_registers(slave_port_a, 0B11101111, 0B00100000);
 
   /*
-  ** Loads the IDT
+  ** 0B1000 means P-bit set to 1 = segment present
   */
-  set_idt();
+  for (i = 0;i < IDT_SIZE;++i)
+    if (i != CLOCK_IDX || i != KEYBD_IDX)
+      set_idt_segment(i, 0x8, (int)&asm_default_isr, INT_GATE, 0B1000);
+  set_idt_segment(CLOCK_IDX, 0x8, (int)&asm_clock_isr, INT_GATE, 0B1000);
+  set_idt_segment(KEYBD_IDX, 0x8, (int)&asm_keybd_isr, INT_GATE, 0B1000);
 }
