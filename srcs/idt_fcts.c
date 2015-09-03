@@ -76,6 +76,12 @@ static inline void	set_idt_segment(unsigned index,
   g_idt[index].offset_high_part = isr_addr >> 16;
 }
 
+static inline void	load_idt(void)
+{
+  asm volatile ("lidt (g_idt) \n"
+		"sti \n");
+}
+
 void		init_pic(void)
 {
   /*
@@ -140,4 +146,9 @@ void		init_pic(void)
       set_idt_segment(i, 0x8, (int)&asm_default_isr, INT_GATE, 0B1000);
   set_idt_segment(CLOCK_IDX, 0x8, (int)&asm_clock_isr, INT_GATE, 0B1000);
   set_idt_segment(KEYBD_IDX, 0x8, (int)&asm_keybd_isr, INT_GATE, 0B1000);
+
+  g_idtptr.limit = IDT_SIZE * 8;
+  g_idtptr.base = (int)&g_idt;
+
+  //  load_idt();
 }

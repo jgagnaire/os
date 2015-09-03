@@ -5,7 +5,7 @@
 #ifndef		IDT_H_
 # define	IDT_H_
 
-# define	IDT_SIZE	255
+# define	IDT_SIZE	256
 # define	CLOCK_IDX	32
 # define	KEYBD_IDX	33
 
@@ -28,7 +28,7 @@ struct
 {
   short		limit;
   int		base;
-}__attribute__((packed)) g_idtr;
+}__attribute__((packed)) g_idtptr;
 
 extern void	asm_default_isr(void);
 extern void	asm_clock_isr(void);
