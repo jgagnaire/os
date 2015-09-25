@@ -141,7 +141,7 @@ void		init_pic(void)
   /*
   ** 0B1000 means P-bit set to 1 = segment present
   */
-  for (i = 0;i < IDT_SIZE;++i)
+  for (i = 0;i < IDT_SIZE - 1;++i)
     if (i != CLOCK_IDX || i != KEYBD_IDX)
       set_idt_segment(i, 0x8, (int)&asm_default_isr, INT_GATE, 0B1000);
   set_idt_segment(CLOCK_IDX, 0x8, (int)&asm_clock_isr, INT_GATE, 0B1000);
@@ -150,5 +150,5 @@ void		init_pic(void)
   g_idtptr.limit = IDT_SIZE * 8;
   g_idtptr.base = (int)&g_idt;
 
-  //  load_idt();
+  load_idt();
 }
