@@ -70,11 +70,11 @@ static inline void	set_idt_segment(unsigned index,
 					int isr_addr, char type,
 					char s_dpl_p)
 {
-  g_idt[index].offset_low_part = isr_addr;
+  g_idt[index].offset_low_part = (isr_addr & 0x00FF);
   g_idt[index].segment_selector = segment_selector;
   g_idt[index].zero = 0;
-  g_idt[index].type_s_dpl_p = (s_dpl_p << 4) & type;
-  g_idt[index].offset_high_part = isr_addr >> 16;
+  g_idt[index].type_s_dpl_p = (s_dpl_p << 4) | (type & 0B00001111);
+  g_idt[index].offset_high_part = (isr_addr & 0xFF00) >> 16;
 }
 
 static inline void	load_idt(void)
