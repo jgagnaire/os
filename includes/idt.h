@@ -6,6 +6,7 @@
 # define	IDT_H_
 
 # define	IDT_SIZE	256
+# define	IDT_ADDR	0x800
 # define	CLOCK_IDX	32
 # define	KEYBD_IDX	33
 

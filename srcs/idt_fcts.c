@@ -3,6 +3,7 @@
 */
 
 #include "idt.h"
+#include "utils.h"
 
 static inline void	init_icw(char port, char value)
 {
@@ -78,7 +79,9 @@ static inline void	set_idt_segment(unsigned index,
 
 static inline void	load_idt(void)
 {
-  asm volatile ("lidt (g_idt) \n"
+  memcpy((char *)g_idtptr.base, (char *)g_idt, g_idtptr.limit);
+
+  asm volatile ("lidt (g_idtptr) \n"
 		"sti \n");
 }
 
@@ -91,6 +94,20 @@ void		init_pic(void)
   unsigned char	master_port_a = 0x20;
   unsigned char	slave_port_a = 0xA0;
   unsigned	i;
+
+  /*
+  ** 0B1000 means P-bit set to 1 = segment present
+  */
+  for (i = 0;i < IDT_SIZE;++i)
+    if (i != CLOCK_IDX && i != KEYBD_IDX)
+      set_idt_segment(i, 0x8, (int)&asm_default_isr, INT_GATE, 0B1000);
+  set_idt_segment(CLOCK_IDX, 0x8, (int)&asm_clock_isr, INT_GATE, 0B1000);
+  set_idt_segment(KEYBD_IDX, 0x8, (int)&asm_keybd_isr, INT_GATE, 0B1000);
+
+  g_idtptr.limit = IDT_SIZE * 8;
+  g_idtptr.base = IDT_ADDR;
+
+  load_idt();
 
   /*
   ** Master PIC ICW (Initialization Command Words) registers initialization:
@@ -137,18 +154,4 @@ void		init_pic(void)
   ** Same for the slave
   */
   init_ocw_registers(slave_port_a, 0B11101111, 0B00100000);
-
-  /*
-  ** 0B1000 means P-bit set to 1 = segment present
-  */
-  for (i = 0;i < IDT_SIZE - 1;++i)
-    if (i != CLOCK_IDX || i != KEYBD_IDX)
-      set_idt_segment(i, 0x8, (int)&asm_default_isr, INT_GATE, 0B1000);
-  set_idt_segment(CLOCK_IDX, 0x8, (int)&asm_clock_isr, INT_GATE, 0B1000);
-  set_idt_segment(KEYBD_IDX, 0x8, (int)&asm_keybd_isr, INT_GATE, 0B1000);
-
-  g_idtptr.limit = IDT_SIZE * 8;
-  g_idtptr.base = (int)&g_idt;
-
-  load_idt();
 }

@@ -65,6 +65,14 @@ void	putstr(char *s)
     putchar(*s);
 }
 
+void		memcpy(char *addr, char *src, unsigned long size)
+{
+  unsigned	i;
+
+  for (i = 0;i < size;++i)
+    addr[i] = src[i];
+}
+
 inline void	set_text_attr(char new_attr)
 {
   g_cursor.attr = new_attr;

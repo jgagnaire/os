@@ -14,9 +14,8 @@ asm_keybd_isr:
 	call keybd_isr
 	mov al, 0x20
 	out 0x20, al
-	
+
 asm_clock_isr:
 	call clock_isr
 	mov al, 0x20
 	out 0x20, al
-
