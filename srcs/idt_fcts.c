@@ -154,4 +154,5 @@ void		init_pic(void)
   ** Same for the slave
   */
   init_ocw_registers(slave_port_a, 0B11101111, 0B00100000);
+  putstr("IDT loaded !\n");
 }

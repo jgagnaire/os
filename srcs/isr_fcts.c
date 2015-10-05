@@ -16,5 +16,5 @@ void	keybd_isr(void)
 
 void	clock_isr(void)
 {
-  putstr("tick\n");
+  ;
 }

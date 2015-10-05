@@ -3,6 +3,7 @@
 */
 
 #include "gdt.h"
+#include "utils.h"
 
 /*
 ** Sets a segment descriptor parameter
@@ -83,4 +84,5 @@ void	reset_gdt(void)
   g_gdtptr.base = (int)&g_gdt;
 
   load_new_gdt();
+  putstr("GDT loaded !\n");
 }
