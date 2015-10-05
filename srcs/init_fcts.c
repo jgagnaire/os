@@ -13,7 +13,7 @@ void	init_system(void)
   /*
   ** Default text attribute: black background, white character
   */
-  g_cursor.attr = 0B000111;
+  set_text_attr(0B000111);
 
   /*
   ** Initializes the PIC(s) - Programmable Interrupt Controller

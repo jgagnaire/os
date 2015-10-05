@@ -4,6 +4,8 @@
 
 #include "utils.h"
 
+extern struct { char x, y, attr; } g_cursor;
+
 void	esc_char_backspace(void)
 {
   g_cursor.x = !g_cursor.x ? 0 : g_cursor.x - 1;

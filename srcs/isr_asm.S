@@ -9,13 +9,16 @@ asm_default_isr:
 	call default_isr
 	mov al, 0x20		; EOI is written to the PIC I/O port after execution
 	out 0x20, al		; of the ISR
+	iret
 
 asm_keybd_isr:
 	call keybd_isr
 	mov al, 0x20
 	out 0x20, al
+	iret
 
 asm_clock_isr:
 	call clock_isr
 	mov al, 0x20
 	out 0x20, al
+	iret

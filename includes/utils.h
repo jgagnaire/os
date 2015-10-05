@@ -20,17 +20,10 @@ void		esc_char_backspace(void);
 void		esc_char_horiztab(void);
 void		esc_char_newline(void);
 
-struct
-{
-  char	x;
-  char	y;
-  char	attr;
-}	g_cursor;
-
 static const struct
 {
-  char	c;
-  void	(*fptr)(void);
+  char c;
+  void (*fptr)(void);
 } g_esc_char_tab[7] =
   {
     {8, esc_char_backspace},

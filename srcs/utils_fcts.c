@@ -4,6 +4,11 @@
 
 #include "utils.h"
 
+struct
+{
+  char x, y, attr;
+} g_cursor;
+
 void		clear_screen(void)
 {
   int		*fb;
@@ -49,14 +54,15 @@ void		putchar(char c)
   ** Otherwise, we just display it
   */
   fbptr = (char *)0xB8000;
-  fbptr[i = 2 * g_cursor.x + 160 * g_cursor.y] = c;
+  i = (2 * g_cursor.x + 160 * g_cursor.y);
+  fbptr[i] = c;
   fbptr[i + 1] = g_cursor.attr;
 
   /*
   ** And increment the cursor position
   */
-  if (!(g_cursor.x = (g_cursor.x + 1) % 80))
-    g_cursor.y = (g_cursor.y + 1) % 25;
+  if (!(g_cursor.x = ((g_cursor.x + 1) % 80)))
+    g_cursor.y = ((g_cursor.y + 1) % 25);
 }
 
 void	putstr(char *s)
@@ -65,7 +71,7 @@ void	putstr(char *s)
     putchar(*s);
 }
 
-void		memcpy(char *addr, char *src, unsigned long size)
+inline void	memcpy(char *addr, char *src, unsigned long size)
 {
   unsigned	i;
 

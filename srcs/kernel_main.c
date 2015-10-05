@@ -9,7 +9,7 @@ void		kmain(void);
 
 void	_start(void)
 {
-  init_system();
+   init_system();
 
   /*
   ** Sets the stack pointer esp - We have to do it here because
@@ -22,8 +22,7 @@ void	_start(void)
   */
   asm volatile ("mov ax, 0x18 \n"
                 "mov ss, ax \n"
-                "mov esp, 0x1FFFF \n");
-
+		"mov esp, 0x1FFFF \n");
   /*
   ** We use an extra function call to start with a
   ** clean stack frame since we modified it earlier
@@ -33,8 +32,6 @@ void	_start(void)
 
 void	kmain(void)
 {
-  putstr("LeL\n");
-
   asm volatile ("hlt \n");
   while (1);
 }
