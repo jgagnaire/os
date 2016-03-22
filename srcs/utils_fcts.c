@@ -36,6 +36,27 @@ void		clear_screen(void)
   g_cursor.y = 0;
 }
 
+void		putnbr(int nb)
+{
+  if (nb < 0)
+    {
+      putchar('-');
+      nb *= -1;
+    }
+  if (nb / 10 > 0)
+    putnbr(nb / 10);
+  putchar((char)((nb % 10) + 48));
+}
+
+void		print_key(int key)
+{
+  if (!key)
+    return ;
+  else
+    print_key(key >> 8);
+  putchar(key);
+}
+
 void		putchar(char c)
 {
   unsigned	i;
