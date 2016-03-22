@@ -67,9 +67,26 @@ void		putchar(char c)
   ** '\b', '\t', '\n', '\v', '\f' or '\r'
   ** we have to deal with the cursor position
   */
-  for (i = 0;g_esc_char_tab[i].fptr;++i)
-    if (c == g_esc_char_tab[i].c)
-      return (g_esc_char_tab[i].fptr());
+  switch (c)
+    {
+    case '\b':
+      g_cursor.x = !g_cursor.x ? 0 : g_cursor.x - 1;
+      return ;
+    case '\t':
+      g_cursor.x = (g_cursor.x + 8) % 80;
+      return ;
+    case '\n':
+      g_cursor.x = 0;
+      g_cursor.y = (g_cursor.y + 1) % 25;
+      return ;
+    case '\f':
+    case '\v':
+      g_cursor.y = (g_cursor.y + 1) % 25;
+      return ;
+    case '\r':
+      g_cursor.x = 0;
+      return ;
+    }
 
   /*
   ** Otherwise, we just display it
