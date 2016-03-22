@@ -7,7 +7,7 @@
 
 extern t_keypress	EN_layout[11];
 
-static void	init_kbd_layouts(t_keyboard *kbd)
+static inline void	init_kbd_layouts(t_keyboard *kbd)
 {
   kbd->keyboard_layout[EN] = EN_layout;
 }
