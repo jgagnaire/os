@@ -85,5 +85,5 @@ void	clock_isr(void)
 {
   putstr("clock interrupt: ");
   putnbr(g_time_since_on);
-  putchar(" seconds since power-up\n");
+  putstr(" seconds since power-up\n");
 }
