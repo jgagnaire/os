@@ -31,9 +31,9 @@ struct
   int		base;
 }__attribute__((packed)) g_idtptr;
 
-extern void	asm_default_isr(void);
-extern void	asm_clock_isr(void);
-extern void	asm_keybd_isr(void);
+void	asm_default_isr(void);
+void	asm_clock_isr(void);
+void	asm_keybd_isr(void);
 
 void		init_pic(void);
 

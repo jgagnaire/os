@@ -6,6 +6,7 @@
 #include "utils.h"
 
 extern t_keypress	EN_layout[11];
+unsigned		g_time_since_on;
 
 static inline void	init_kbd_layouts(t_keyboard *kbd)
 {
@@ -77,4 +78,7 @@ void			keybd_isr(void)
 
 void	clock_isr(void)
 {
+  putstr("clock interrupt: ");
+  putnbr(g_time_since_on);
+  putchar(" seconds since power-up\n");
 }

@@ -19,8 +19,4 @@ void		putstr(char *);
 void		putnbr(int);
 void		print_key(int);
 
-/*
-** escaped characters fcts
-*/
-
 #endif		/* !UTILS_H_ */
