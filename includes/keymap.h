@@ -12,6 +12,9 @@
 # define RCTRL 0xE01D
 # define ALTGR 0xE038
 # define GET_KEYCODE 0x60
+# define CAPS_KEY 0x3A
+# define NUM_KEY 0x45
+# define SCROLL_KEY 0x46
 
 # define KEY_RELEASE 0x80
 # define LAYOUT_SIZE(S) (sizeof(S) / sizeof(S[0]))
