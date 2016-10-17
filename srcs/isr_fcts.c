@@ -18,7 +18,7 @@ static inline void	init_kbd_layouts(t_keyboard *kbd)
 ** Debug function...
 ** Allow me to print each key I press
 */
-static void     key_management(t_keyboard *kbd,
+static void	key_management(t_keyboard *kbd,
 			       unsigned long int keycode)
 {
   if ((unsigned long)(keycode - KEY_RELEASE) < LAYOUT_SIZE(EN_layout) &&
@@ -48,7 +48,7 @@ void	default_isr(void)
 void			keybd_isr(void)
 {
   static unsigned	keycode;
-  static t_keyboard     kbd;
+  static t_keyboard	kbd;
 
   if (!kbd.keyboard_layout[0])
     init_kbd_layouts(&kbd);
@@ -83,7 +83,5 @@ void			keybd_isr(void)
 
 void	clock_isr(void)
 {
-  putstr("clock interrupt: ");
-  putnbr(g_time_since_on);
-  putstr(" seconds since power-up\n");
+  ++g_time_since_on;
 }

@@ -4,12 +4,12 @@
 
 #include "utils.h"
 
-extern void	init_system(void);
-void		kmain(void);
+void	init_system(void);
+void	kmain(void);
 
 void	_start(void)
 {
-   init_system();
+  init_system();
 
   /*
   ** Sets the stack pointer esp - We have to do it here because
@@ -24,8 +24,8 @@ void	_start(void)
                 "mov ss, ax \n"
 		"mov esp, 0x1FFFF \n");
   /*
-  ** We use an extra function call to start with a
-  ** clean stack frame since we modified it earlier
+  ** We use an extra function call to start with a clean stack frame
+  ** since we modified it earlier
   */
   kmain();
 }

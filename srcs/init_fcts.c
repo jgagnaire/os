@@ -2,6 +2,7 @@
 ** JG - init_fcts.c
 */
 
+#include "paging.h"
 #include "utils.h"
 #include "gdt.h"
 #include "idt.h"
@@ -65,15 +66,19 @@ void	init_system(void)
   init_pic();
 
   /*
-  ** As the kernel is not supposed to know the GDT,
-  ** it has to define its own to be able to fully
-  ** rely on it
+  ** As the kernel is not supposed to know the GDT, it
+  ** has to define its own to be able to fully rely on it
   */
   reset_gdt();
 
   /*
   ** Initializes the PIT - Programmable Interval Timer
-  ** to 50 Hz
+  ** to 1 Hz <=> timeout every second
   */
   init_timer(1);
+
+  /*
+  ** Loads the pages directory and enables the paging
+  */
+  init_paging();
 }

@@ -109,7 +109,7 @@ void	putstr(char *s)
     putchar(*s);
 }
 
-inline void	memcpy(char *addr, char *src, unsigned long size)
+void		memcpy(char *addr, char *src, unsigned long size)
 {
   unsigned	i;
 
@@ -117,7 +117,7 @@ inline void	memcpy(char *addr, char *src, unsigned long size)
     addr[i] = src[i];
 }
 
-inline void	set_text_attr(char new_attr)
+void	set_text_attr(char new_attr)
 {
   g_cursor.attr = new_attr;
 }

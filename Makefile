@@ -30,6 +30,7 @@ KERNEL_NAME	= kernel
 KERNEL_SRCS	= $(SRCS_FLD)kernel_main.c		\
 		$(SRCS_FLD)init_fcts.c			\
 		$(SRCS_FLD)gdt_fcts.c			\
+		$(SRCS_FLD)paging_fcts.c		\
 		$(SRCS_FLD)idt_fcts.c			\
 		$(SRCS_FLD)utils_fcts.c			\
 		$(SRCS_FLD)keyboard_layout.c		\
