@@ -13,7 +13,7 @@ called the PE (Protection Enable) bit.
    	  - CS is the code segment selector
 	  - DS is the data segment selector
 	  - ES, FS, GS are general segment selectors
-	  - ss is the stack segment selector
+	  - SS is the stack segment selector
 
    The GDT is an array of 64-bit records, each records describing one segment.
    Its location in memory is given to the processor in the GDTR (GDT Register) through the
@@ -65,4 +65,5 @@ called the PE (Protection Enable) bit.
 -> The segmentation unit then turns the logical address in a linear address on 32 bits
 
 -> If paging is activated, the paging unit turns the linear address in a physical address
+   (See note on Paging)
 

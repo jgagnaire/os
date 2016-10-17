@@ -1,0 +1,39 @@
+
+Paging is done by the Memory Managing Unit (MMU), which is part of the CPU on modern systems.
+
+-> Segmentation transforms the logical address, directly used by the programmer, into a linear address
+-> Paging (if enabled) turns the linear address in a physical address
+
+This is achieved through 2 data structures:
+- The page directory, in which each entry points to a page table. Its address is contained in the cr3 register.
+- The page tables, in which each entry points to a physical address, corresponding to the start of a page.
+
+-> A page directory entry is composed of:
+   - the page table address, on 20 bits = 12 less significant bits of the 32-bit address must be set to 0
+   - 3 bits available to use by the OS
+   - The G bit, ignored
+   - The S (Size) bit: 4 KiB pages if 0, 4 MiB pages if set to 1
+   - A 0 bit, ignored
+   - The A (Accessed) bit: the bit is set if a page has been read or written to, otherwise 0.
+   - The D (cache Disable) bit: the page won't be cached if 1, otherwise it will be.
+   - The W (Write-through) bit: write-through is enabled if 1, write-back if 0
+     (See http://www.computerweekly.com/feature/Write-through-write-around-write-back-Cache-explained).
+   - The U (User/supervisor) bit: the page is accessible by all if 1, and only by the supervisor if 0.
+   - The R (Read/write) bit: the page is read/write if 1, read-only if 0.
+   - The P (Present) bit: the page is in physical memory at the moment if 1, 0 otherwise.
+     If a page is not present and called, a page fault occurs and the OS has to handle it.
+     When the P bit is not set, the other 31 bits can be used by the OS to store extra information, like
+     where the page was put in swap memory for example.
+
+-> A page table entry contains:
+   - the page physical address, on 20 bits
+   - 3 bits available to use by the OS
+   - the G (Global) bit: the Translation Lookaside Buffer (TLB, see below) won't update the cr3 address
+     in its cache if it is ever reset.
+   - the D (Dirty) bit: the page has been written to if set, not if 0.
+   - the C (Cache Disabled) bit: same as the D bit above.
+
+The Translation Lookaside Buffer (TLB) is a memory cache that stores recent translations from virtual
+memory to physical addresses, for faster retrieval.
+
+Virtual memory is an OS feature that allows pages to be transferred from RAM to disk when RAM is full.
